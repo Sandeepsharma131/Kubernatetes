@@ -1,0 +1,23 @@
+$ kubectl start --extra-config=apiserver.authorization.mode=RBAC
+
+$ kubectl create namespace dev
+
+$ kubectl genrsa -out emp.key 2048
+
+$ openssl req -new -key emp.key -out emp.csr -subj "/CN=emp /O=dev"
+
+$ kubectl certificate approve emp.csr
+
+$ openssl x509 -req -in emp.csr -CA ~/.minikube/ca.crt -CAkey ~/.minikube/ca.key -CAcreateserial -out emp.crt -days 500
+
+$ kubectl config set-context dev-ctx --cluster=minikube --namespace=dev --user=emp
+
+$ kubectl config set-credentials emp --client-key=emp.key --client-certificate=emp.crt --embed-certs=true
+
+$ kubectl create role emp-role --verb=get --verb=list --resource=pods --namespace=dev
+
+$kubectl create rolebinding emp-bind --role=emp-role --user=emp
+
+$ kubectl config use-context dev-ctx
+
+$ kubectl run nginx --image=nginx --namespace=dev

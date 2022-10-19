@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      env:
+        - name: SERVER_URL_ENV
+          valueFrom:
+            configMapKeyRef: 
+              name: config-map
+              key: SERVER_URL
+  restartPolicy: Never
