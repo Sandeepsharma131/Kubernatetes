@@ -1,3 +1,5 @@
+Kubernetes pods, secret, pv, pvc, RBAC
+
 In this scenerio, we will work with k8s(Kubernetes different services such as pods, secret, pv, pvc, RBAC)
 
 A. Install Pre-requisite:
